@@ -1,0 +1,39 @@
+<link rel="stylesheet" type="text/css" href="css/store-system-main.css">
+<link rel="stylesheet" type="text/css" href="css/webstore.css">
+
+<h1>Results Page</h1>
+
+
+<% if(response.length > 1)  { %>
+  <h3><%= response.length %> results found for "<%= itemCategoryFormField %><%= itemCodeFormField %><%= itemDescriptionFormField %>". Yum Yum!</h3>
+  <% } else if (response.length == 1)  { %>
+    <h3><%= response.length %> result found for "<%= itemCategoryFormField %><%= itemCodeFormField %><%= itemDescriptionFormField %>". Yum!</h3>
+    <% } else { %>
+      <h3>Sorry, no items with that UPC or PLU code, or description, were found. Please try again.</h3>
+    <% } %>
+
+<main id="products">
+  <div id="food-products" class="food-products">
+    <div id="search-results" class="food-category-section">
+    <% for(var i = 0; i < response.length; i++) { %>
+    <div id="food-item-<%= response[i].itemCode %>" class="food-item-section">
+      <% if (response[i].itemImage == "images/produce/") { %>
+        <img src="images/produce/z-image-not-available.jpg" width="200">
+    <% } else { %>
+    <img src=<%= response[i].itemImage %> width="200">
+    <% } %>
+      <h3> <%= response[i].itemDescription %> <%= response[i].itemType %></h3>
+      <div id="price-amount-<%= response[i].itemCode %>" class="price-and-amount">
+        <% if (response[i].weighedItem == true) { %>
+          <h4><%= (response[i].itemPrice * 0.454).toFixed(2) %>/lb</h4>
+              <% } else { %>
+          <h4><%= response[i].itemPrice %>/ea</h4>
+          <% } %>
+      <label for="quantity-<%= response[i].itemCode %>">Quantity: </label>
+      <input id="quantity-<%= response[i].itemCode %>" type="number" min="0">
+      </div>
+    <button>add to order</button>
+    </div>
+    <% } %>
+  </div>
+</main>
